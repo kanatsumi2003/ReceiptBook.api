@@ -1,5 +1,6 @@
 ﻿using BusinessLogicLayer.IServices;
 using DataAccessLayer;
+using DataAccessLayer.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -18,17 +19,29 @@ namespace BookManagement.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers() => await _userService.GetAllUsers();
-
-        [HttpPost]
-        public async Task AddNewUser(User user)
+        public async Task<ActionResult<ListResponseModel<User>>> GetUsers()
         {
             try
             {
-                await _userService.CreateNewUser(user);
-            } catch (Exception ex)
+                return await _userService.GetAllUsers();
+            }
+            catch (Exception e)
             {
-                BadRequest(ex.Message);
+                return BadRequest(e.Message);
+            }
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult<ObjectResponseModel>> AddNewUser(User user)
+        {
+            try
+            {
+                return await _userService.CreateNewUser(user);
+            }
+            catch (Exception ex)
+            { 
+                return BadRequest(ex.Message);
             }
         }
     }

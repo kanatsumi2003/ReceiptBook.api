@@ -1,10 +1,11 @@
 ﻿using DataAccessLayer;
+using DataAccessLayer.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BusinessLogicLayer.IServices;
 
 public interface IUserService
 {
-    Task<ActionResult<IEnumerable<User>>> GetAllUsers();
-    Task CreateNewUser(User user);
+    Task<ObjectResponseModel> CreateNewUser(User user);
+    Task<ListResponseModel<User>> GetAllUsers();
 }

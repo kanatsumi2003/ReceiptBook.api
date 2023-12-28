@@ -9,4 +9,5 @@ public record User
     public string Name { get; set; }
     public string ContactNo { get; set; }
     public string Role { get; set; }
+    public string CCID { get; set; }
 }

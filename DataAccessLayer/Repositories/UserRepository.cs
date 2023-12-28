@@ -1,4 +1,5 @@
-﻿using DataAccessLayer.IRepository;
+﻿using DataAccessLayer.DTOs;
+using DataAccessLayer.IRepository;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,13 +15,52 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public async Task CreateNewUser(User user)
+    public async Task<ObjectResponseModel> CreateNewUser(User user)
     {
-        _context.Users.Add(user);
-        await _context.SaveChangesAsync();
+        var data = new User();
+        var message = "blank";
+        var status = 500;
+        if (user.CCID.Length < 12)
+        {
+            message = "CCID must be at least 12 character";
+            status = 400;
+        }
+        else
+        {
+            _context.Users.Add(user);
+            var rs = await _context.SaveChangesAsync();
+            if (rs > 0)
+            {
+                data = (new User
+                {
+                    ID = user.ID,
+                    Name = user.Name,
+                    Role = user.Role,
+                    ContactNo = user.ContactNo,
+                    CCID = user.CCID
+                });
+            }
+        }
+
+        return new ObjectResponseModel(data)
+        {
+            Message = message,
+            Status = status,
+        };
     }
-    public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
+
+    public async Task<ICollection<User>> GetAllUsers()
     {
         return await _context.Users.ToListAsync();
+    }
+
+    public async Task DeleteUser(int userID)
+    {
+        var user = _context.Users.FirstOrDefaultAsync(u => u.ID.Equals(userID));
+        if (user != null)
+        {
+            _context.Remove(user);
+            await _context.SaveChangesAsync();
+        }
     }
 }

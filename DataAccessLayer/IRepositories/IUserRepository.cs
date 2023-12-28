@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DataAccessLayer.DTOs;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DataAccessLayer.IRepository;
 
 public interface IUserRepository
 {
-    Task CreateNewUser(User user);
-    Task<ActionResult<IEnumerable<User>>> GetAllUsers();
+    Task<ObjectResponseModel> CreateNewUser(User user);
+    Task<ICollection<User>> GetAllUsers();
 }

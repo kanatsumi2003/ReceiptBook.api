@@ -1,5 +1,6 @@
 ﻿using BusinessLogicLayer.IServices;
 using DataAccessLayer;
+using DataAccessLayer.DTOs;
 using DataAccessLayer.IRepository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,10 +15,19 @@ public class UserService : IUserService
         _userRepository = userRepository;
     }
 
-    public async Task<ActionResult<IEnumerable<User>>> GetAllUsers() => await _userRepository.GetAllUsers();
-
-    public async Task CreateNewUser(User user)
+    public async Task<ListResponseModel<User>> GetAllUsers()
     {
-        await _userRepository.CreateNewUser(user);
+        Task<ICollection<User>> data = _userRepository.GetAllUsers();
+        return new ListResponseModel<User>(await data)
+        {
+            Data = await data,
+            Type = "User Accounts"
+        };
+    } 
+
+    public async Task<ObjectResponseModel> CreateNewUser(User user)
+    {
+        return await _userRepository.CreateNewUser(user);
     }
+    
 }
