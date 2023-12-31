@@ -19,6 +19,7 @@ namespace BookManagement.API.Controllers
         }
 
         [HttpGet]
+        [Route("get_all_users")]
         public async Task<ActionResult<ListResponseModel<User>>> GetUsers()
         {
             try
@@ -45,4 +46,4 @@ namespace BookManagement.API.Controllers
             }
         }
     }
-}
+} 
