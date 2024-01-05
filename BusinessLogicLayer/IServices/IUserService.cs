@@ -8,4 +8,5 @@ public interface IUserService
 {
     Task<ObjectResponseModel> CreateNewUser(User user);
     Task<ListResponseModel<User>> GetAllUsers();
+    Task<ObjectResponseModel> DeleteUser(int UserID);
 }

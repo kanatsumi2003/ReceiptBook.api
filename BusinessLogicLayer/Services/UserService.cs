@@ -17,17 +17,30 @@ public class UserService : IUserService
 
     public async Task<ListResponseModel<User>> GetAllUsers()
     {
-        Task<ICollection<User>> data = _userRepository.GetAllUsers();
+        Task<List<User>> data = _userRepository.GetAllUsers();
         return new ListResponseModel<User>(await data)
         {
             Data = await data,
-            Type = "User Accounts"
+            Message = "Get All User",
+            Type = "User Accounts",
+            Status = 200,
         };
     } 
 
-    public async Task<ObjectResponseModel> CreateNewUser(User user)
+    public async Task<ObjectResponseModel> CreateNewUser(User User)
     {
-        return await _userRepository.CreateNewUser(user);
+        return await _userRepository.CreateNewUser(User);
     }
     
+    public async Task<ObjectResponseModel> DeleteUser(int UserID)
+    {
+        var data = await _userRepository.DeleteUser(UserID);
+        return new ObjectResponseModel(data)
+        {
+            Data = data,
+            Message = "Remove User Account",
+            Status = 200,
+            Type = "User Account",
+        };
+    }
 }

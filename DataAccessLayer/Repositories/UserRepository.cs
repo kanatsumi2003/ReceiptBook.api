@@ -49,18 +49,17 @@ public class UserRepository : IUserRepository
         };
     }
 
-    public async Task<ICollection<User>> GetAllUsers()
-    {
-        return await _context.Users.ToListAsync();
-    }
+    public async Task<List<User>> GetAllUsers() => await _context.Users.ToListAsync();
 
-    public async Task DeleteUser(int userID)
+
+    public async Task<User> DeleteUser(int userID)
     {
-        var user = _context.Users.FirstOrDefaultAsync(u => u.ID.Equals(userID));
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.ID.Equals(userID));
         if (user != null)
-        {
+;        {
             _context.Remove(user);
             await _context.SaveChangesAsync();
         }
+        return user;
     }
 }

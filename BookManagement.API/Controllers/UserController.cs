@@ -20,7 +20,7 @@ namespace BookManagement.API.Controllers
 
         [HttpGet]
         [Route("get_all_users")]
-        public async Task<ActionResult<ListResponseModel<User>>> GetUsers()
+        public async Task<ActionResult<ListResponseModel<User>>> GetAllUsers()
         {
             try
             {
@@ -34,6 +34,7 @@ namespace BookManagement.API.Controllers
 
 
         [HttpPost]
+        [Route("create_new_user")]
         public async Task<ActionResult<ObjectResponseModel>> AddNewUser(User user)
         {
             try
@@ -42,6 +43,19 @@ namespace BookManagement.API.Controllers
             }
             catch (Exception ex)
             { 
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpDelete]
+        [Route("delete_user/{userID}")]
+        public async Task<ActionResult<ObjectResponseModel>> DeleteUser(int userID)
+        {
+            try
+            {
+                return await _userService.DeleteUser(userID);
+            }
+            catch (Exception ex)
+            {
                 return BadRequest(ex.Message);
             }
         }
