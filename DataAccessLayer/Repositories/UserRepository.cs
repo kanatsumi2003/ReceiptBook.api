@@ -14,52 +14,14 @@ public class UserRepository : IUserRepository
     {
         _context = context;
     }
-
-    public async Task<ObjectResponseModel> CreateNewUser(User user)
-    {
-        var data = new User();
-        var message = "blank";
-        var status = 500;
-        if (user.CCID.Length < 12)
-        {
-            message = "CCID must be at least 12 character";
-            status = 400;
-        }
-        else
-        {
-            _context.Users.Add(user);
-            var rs = await _context.SaveChangesAsync();
-            if (rs > 0)
-            {
-                data = (new User
-                {
-                    ID = user.ID,
-                    Name = user.Name,
-                    Role = user.Role,
-                    ContactNo = user.ContactNo,
-                    CCID = user.CCID
-                });
-            }
-        }
-
-        return new ObjectResponseModel(data)
-        {
-            Message = message,
-            Status = status,
-        };
-    }
-
+    public async Task<bool> IsUserCCIDDuplicate(string userCCID) => await _context.Users.AnyAsync(u => u.CCID.Equals(userCCID));
+    public void CreateNewUser(User user) => _context.Users.Add(user);
     public async Task<List<User>> GetAllUsers() => await _context.Users.ToListAsync();
-
-
-    public async Task<User> DeleteUser(int userID)
+    public void DeleteUser(User user)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.ID.Equals(userID));
-        if (user != null)
-;        {
-            _context.Remove(user);
-            await _context.SaveChangesAsync();
-        }
-        return user;
+        _context.Users.Remove(user);
     }
+    public async Task<User> GetUserByIDAsync(int userID) => await _context.Users.FirstOrDefaultAsync(u => u.ID.Equals(userID));
+    public async Task<int> SaveChangesAsync() => await _context.SaveChangesAsync();
+    public void UpdateUser(User user) => _context.Users.Update(user);
 }

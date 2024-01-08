@@ -59,5 +59,18 @@ namespace BookManagement.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpPut]
+        [Route("update_user/{userID}")]
+        public async Task<ActionResult<ObjectResponseModel>> UpdateUser(int userID, User user)
+        {
+            try
+            {
+                return await _userService.UpdateUser(userID, user);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 } 

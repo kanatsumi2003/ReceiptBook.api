@@ -6,7 +6,11 @@ namespace DataAccessLayer.IRepository;
 
 public interface IUserRepository
 {
-    Task<ObjectResponseModel> CreateNewUser(User user);
+    Task<bool> IsUserCCIDDuplicate(string userCCID);
+    void CreateNewUser(User user);
     Task<List<User>> GetAllUsers();
-    Task<User> DeleteUser(int userID);
-}
+    void DeleteUser(User user);
+    Task<User> GetUserByIDAsync(int userID);
+    Task<int> SaveChangesAsync();
+    void UpdateUser(User user);
+};
