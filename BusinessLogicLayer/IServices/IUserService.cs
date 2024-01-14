@@ -10,4 +10,5 @@ public interface IUserService
     Task<ListResponseModel<User>> GetAllUsers();
     Task<ObjectResponseModel> DeleteUser(int userID);
     Task<ObjectResponseModel> UpdateUser(int userID, User user);
+    Task<ObjectResponseModel> SearchUserByID(int userID);
 }

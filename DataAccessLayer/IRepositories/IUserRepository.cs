@@ -13,4 +13,5 @@ public interface IUserRepository
     Task<User> GetUserByIDAsync(int userID);
     Task<int> SaveChangesAsync();
     void UpdateUser(User user);
+    Task<User> SearchUserByID(int userID);
 };

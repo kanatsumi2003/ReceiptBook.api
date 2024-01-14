@@ -138,4 +138,29 @@ public class UserService : IUserService
             Type = "User Account",
         };
     }
+
+    public async Task<ObjectResponseModel> SearchUserByID(int userID)
+    {
+        var data = await _userRepository.SearchUserByID(userID);
+        var status = 500;
+        var message = "";
+        if (data == null)
+        {
+            message = "User not found";
+            status = 400;
+        }
+        else
+        {
+            message = "Sucessful";
+            status = 200;
+        }
+
+        return new ObjectResponseModel(data)
+        {
+            Message = message,
+            Data = data,
+            Status = status,
+            Type = "User Account"
+        };
+    }
 }

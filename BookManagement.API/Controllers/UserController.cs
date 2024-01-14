@@ -32,7 +32,20 @@ namespace BookManagement.API.Controllers
             }
         }
 
-
+        [HttpGet]
+        [Route("search_user_by_id/{userID}")]
+        public async Task<ActionResult<ObjectResponseModel>> SearchUserByID(int userID)
+        {
+            try
+            {
+                return await _userService.SearchUserByID(userID);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }    
+        }
+        
         [HttpPost]
         [Route("create_new_user")]
         public async Task<ActionResult<ObjectResponseModel>> AddNewUser(User user)
