@@ -1,9 +1,9 @@
 name: Build and Deploy InternSystem
 
 on:
-  pull_request:
-    types:
-      - closed
+  push:
+    branches:
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,18 +26,16 @@ jobs:
          
      steps:
      
-     # - name: Connect to EC2 Instance, update Docker
-     #   uses: appleboy/ssh-action@master
-     #   with:
-     #     host: ${{secrets.SSH_HOST}}
-     #     username: ${{secrets.SSH_USERNAME}}
-     #     key: ${{secrets.SSH_PASSWORD}}
-     #     script: |
-     #      if [ "${{ github.event_name }}" == "pull_request" ] && [ "${{ github.event.action }}" == "closed" ] && [ "${{ github.event.pull_request.base.ref }}" == "main" ]; then
-     #        sudo docker stop ${{secrets.DOCKER_IMAGE}}-backend-api || true
-     #        sudo docker rm ${{secrets.DOCKER_IMAGE}}-backend-api || true
-     #        sudo docker rmi ${{secrets.DOCKER_USERNAME}}/${{secrets.DOCKER_IMAGE}} || true
+     - name: Connect to EC2 Instance, update Docker
+       uses: appleboy/ssh-action@master
+       with:
+         host: ${{secrets.SSH_HOST}}
+         username: ${{secrets.SSH_USERNAME}}
+         key: ${{secrets.SSH_PASSWORD}}
+         script: |
+            sudo docker stop ${{secrets.DOCKER_IMAGE}}-backend-api || true
+            sudo docker rm ${{secrets.DOCKER_IMAGE}}-backend-api || true
+            sudo docker rmi ${{secrets.DOCKER_USERNAME}}/${{secrets.DOCKER_IMAGE}} || true
           
-     #        sudo docker pull ${{secrets.DOCKER_USERNAME}}/${{secrets.DOCKER_IMAGE}}:latest
-     #        sudo docker run -d -p 8070:80 --name ${{secrets.DOCKER_IMAGE}}-backend-api ${{secrets.DOCKER_USERNAME}}/${{secrets.DOCKER_IMAGE}}:latest
-     #      fi
+            sudo docker pull ${{secrets.DOCKER_USERNAME}}/${{secrets.DOCKER_IMAGE}}:latest
+            sudo docker run -d -p 8070:80 --name ${{secrets.DOCKER_IMAGE}}-backend-api ${{secrets.DOCKER_USERNAME}}/${{secrets.DOCKER_IMAGE}}:latest
