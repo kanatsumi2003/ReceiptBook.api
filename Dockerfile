@@ -8,6 +8,8 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["BookManagement.API/BookManagement.API.csproj", "BookManagement.API/"]
+COPY ["BusinessLogicLayer/BusinessLogicLayer.csproj", "BusinessLogicLayer/"]
+COPY ["DataAccessLayer/DataAccessLayer.csproj", "DataAccessLayer/"]
 RUN dotnet restore "BookManagement.API/BookManagement.API.csproj"
 COPY . .
 WORKDIR "/src/BookManagement.API"
