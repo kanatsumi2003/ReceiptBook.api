@@ -25,7 +25,6 @@ jobs:
      runs-on: ubuntu-latest
          
      steps:
-     
      - name: Connect to EC2 Instance, update Docker
        uses: appleboy/ssh-action@master
        with:
